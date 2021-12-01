@@ -602,8 +602,12 @@
                             }
                         } else {
                             if (message.data.length < 3) {
-                                DDLogWarn(@"[MQTTMessage] no returncode");
-                                message = nil;
+                                if (message.data.length == 2) {
+                                    message.returnCode = @(MQTTSuccess);
+                                } else {
+                                    DDLogWarn(@"[MQTTMessage] no returncode");
+                                    message = nil;
+                                }
                             } else {
                                 const UInt8 *bytes = message.data.bytes;
                                 message.returnCode = [NSNumber numberWithInt:bytes[2]];
